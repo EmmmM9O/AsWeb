@@ -1,21 +1,11 @@
 <script setup lang="ts">
-import type { StepTimingFunction } from 'csstype';
-import {ref} from 'vue';
-import Nav from './vue/Nav.vue'
 import SideBar from './vue/SideBar.vue'
-interface Page{
-    [index:string]:string;
-}
-const PageList={
-    '/':'主页',
-    '/map':'地图'
-}as Page;
 </script>
 <template>
     <header class="flex">
         <SideBar/>
         <div className='other'>
-            <Nav v-bind:PageList="PageList"/>
+            <router-view></router-view>
         </div>
     </header>
 </template>
