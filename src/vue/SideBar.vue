@@ -6,8 +6,7 @@
 </template>
 <style scoped>
 .SideBar{
-    margin-right: 0px;
-    margin: 4px;
+    margin: 0;
     width: 10vw;
     height: 100vh;
     background-color: #2C2C2CFF;

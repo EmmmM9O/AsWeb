@@ -1,29 +1,29 @@
 <script setup lang="ts">
+import type { StepTimingFunction } from 'csstype';
 import {ref} from 'vue';
 import Nav from './vue/Nav.vue'
 import SideBar from './vue/SideBar.vue'
 interface Page{
-    readonly name:String,
-    readonly url:String
+    [index:string]:string;
 }
-const PageList=ref([
-    {
-        name:"主页",
-        url:"#app"
-    }
-]);
+const PageList={
+    '/':'主页',
+    '/map':'地图'
+}as Page;
 </script>
 <template>
-    <header class="YinYing flex">
+    <header class="flex">
         <SideBar/>
-        <Nav v-bind:PageList="PageList"/>
+        <div className='other'>
+            <Nav v-bind:PageList="PageList"/>
+        </div>
     </header>
 </template>
 <style scoped>
 header{
     width: 100vw;
     height: 100vh;
-    margin:4px;
+    margin:0;
     background-color: #eee;
 }
 .flex{
@@ -32,5 +32,10 @@ header{
 .YinYing{
     box-shadow: rgb(0 0 0 / 20%) 0px 2px 1px -1px,
     rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px;
+}
+.other{
+  display:flex;
+  flex:1;
+  flex-direction: column;
 }
 </style>
