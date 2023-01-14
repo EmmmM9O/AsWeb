@@ -8,7 +8,9 @@ import Nav from './vue/Nav.vue'
         <SideBar/>
         <div className='other'>
             <Nav/>
-            <router-view></router-view>
+            <KeepAlive>
+                <RouterView/>
+            </KeepAlive>
         </div>
     </header>
 </template>

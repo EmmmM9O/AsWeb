@@ -1,14 +1,24 @@
+<script setup lang="ts">
+import SignUp from './Struct/SignUp.vue';
+</script>
 
 <template>
     <div class="SideBar YinYing">
-
+        <SignUp/>
     </div>
 </template>
 <style scoped>
 .SideBar{
+    overflow: hidden;
+    align-items: center;
+    display: flex;
+    flex:1;
+    flex-direction: column-reverse;
+    text-align:center;
     margin: 0;
-    width: 10vw;
-    height: 100vh;
+    width: 5vw;
+    height: 98vh;
+    padding-bottom: 2vh;
     background-color: #2C2C2CFF;
 }
 .YinYing{

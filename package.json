@@ -10,6 +10,11 @@
     "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mysql": "^2.18.1",
+    "pinia": "^2.0.28",
+    "pinia-plugin-persist": "^1.0.0",
     "vue": "^3.2.45",
     "vue-router": "4"
   },

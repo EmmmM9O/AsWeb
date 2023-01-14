@@ -39,7 +39,7 @@ export default defineComponent({
     margin: 0;
     text-align:center;
     height: 10vh;
-    width: 90vw;
+    width: 95vw;
     background-color: #eee;
     border-bottom: 4px solid white;
 }
