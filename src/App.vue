@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import SideBar from './vue/SideBar.vue'
+import Nav from './vue/Nav.vue'
+
 </script>
 <template>
     <header class="flex">
         <SideBar/>
         <div className='other'>
+            <Nav/>
             <router-view></router-view>
         </div>
     </header>

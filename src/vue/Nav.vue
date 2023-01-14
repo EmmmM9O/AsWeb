@@ -1,37 +1,29 @@
-<script setup lang="ts">
-import {RouterLink} from 'vue-router'
-import {ref,computed} from 'vue'
-interface Page{
-    name:String,
-    url:String,
-}
-defineProps<{
-    PageList:Array<Page>
-}>();
-const currentPath = ref(window.location.hash)
-window.addEventListener('hashchange', () => {
-  currentPath.value = window.location.hash
-})
-const currentHash = computed<String>(() => {
-    return currentPath.value.slice(1) || '/'
-})
-
-/*
-import { defineComponent, readonly } from 'vue';
-interface Page{
-    readonly name:String,
-    readonly url:String
-}
+<script lang="ts">
+import { defineComponent } from 'vue';
+import type { RouteRecordRaw } from 'vue-router';
 export default defineComponent({
     props:{
-        PageList:Array<Page>
+        PageList:Array<RouteRecordRaw>
+    },
+    data(){
+        let temp:Array<RouteRecordRaw> =[];
+        for(let i of this.$router.options.routes){
+            if(i.meta?.show){
+                temp.push(i);
+            }
+        }
+        return(
+            {
+                PageList:temp
+            }
+        );
     }
-});
-*/
+})
+
 </script>
 <template>
     <div class="TopList">
-        <router-link v-bind:to="item.url" type="button" class="DaoHang" v-for="item in PageList" :class="item.url==currentHash ? 'DaoHang2' : ''">{{ item.name }}</router-link >
+        <router-link v-bind:to="item.path" type="button" class="DaoHang" v-for="item in PageList" :class="item.path==$route.path ? 'DaoHang2' : ''">{{ item.name }}</router-link >
     </div>
 </template>
 <style scoped>
