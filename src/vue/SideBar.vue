@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import SignUp from './Struct/SignUp.vue';
+import User from './Struct/User.vue';
 </script>
 
 <template>
     <div class="SideBar YinYing">
-        <SignUp/>
+        <User/>
     </div>
 </template>
 <style scoped>

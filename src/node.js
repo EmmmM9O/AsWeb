@@ -2,17 +2,10 @@ const express = require('express');
 const app = express();
 const mysql = require('mysql');
 const fs=require('fs');
-const QQEmail={
-    
-}
+const sqlstring=require('sqlstring')
+const {Email,MySqlConfig}= require('./config');
 function connectionIbjFn() {
-    return mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: 'emmmPadyyds',
-        port: '4000',
-        database: 'login'
-    })
+    return mysql.createConnection(MySqlConfig);
 }
 app.get('/user/query', (req, res) => {
     var connection = connectionIbjFn();
@@ -24,20 +17,24 @@ app.get('/user/query', (req, res) => {
     connection.end()
 })
 app.get('/user/insert', (req, res) => {
-    var mail = req.query.mail;
-    var nickname = req.query.nickname;
+    var mail =sqlstring.escape(req.query.mail);
+    var nickname =sqlstring.escape(req.query.nickname);
+    var password=sqlstring.escape(req.query.password);
     var connection = connectionIbjFn();
     connection.connect();
-    var sql = 'insert into login_mail(id,mail,nickname,create_time) values(null,"' + mail + '","' + nickname + '",now())';
+    var sql = 'insert into login_mail(id,mail,nickname,password,create_time) values(null,"' + mail + '","' + nickname +'","'+password+ '","now()")';
     connection.query(sql, (err, result) => {
-        res.send(true)
+        if(err){
+            res.send({result:false,err:err})
+        }
+        else res.send({result:true,err:null})
     });
     connection.end()
 })
 app.get('/user/search-key', (req, res) => {
-    var key = req.query.mail
-    var connection = connectionIbjFn()
-    connection.connect()
+    var key =  sqlstring.escape(req.query.mail);
+    var connection = connectionIbjFn();
+    connection.connect();
     var sql = 'select nickname from login_mail where mail like ' + '"' + key + '"';
     connection.query(sql, (err, result) => {
         res.send(result)

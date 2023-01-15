@@ -2,7 +2,8 @@
 import {defineComponent} from 'vue'
 export default defineComponent({
     props:{
-        show:Boolean
+        show:Boolean,
+        showclose:Boolean
     }
 })
 </script>
@@ -19,7 +20,7 @@ export default defineComponent({
                     </div>
                     <div class="modal-footer">
                         <slot name="footer">
-                            <button
+                            <button v-if="showclose"
                                 class="modal-default-button"
                                 @click="$emit('close')"
                             >关闭</button>
