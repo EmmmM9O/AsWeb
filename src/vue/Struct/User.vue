@@ -42,12 +42,19 @@ function loginC(event:Event){
                 </div>
             </template>
             <template #footer>
+                <div class="flex1">
                 <button @click="showUi=!showUi" class="right">关闭</button>
+                </div>
             </template>
         </Modal>
     </Teleport>
 </template>
 <style scoped>
+.flex1{
+    display: flex;
+    flex-direction: row-reverse;
+    align-items:flex-end;
+}
 .button2 span {
     cursor: pointer;
     display: inline-block;
@@ -74,16 +81,20 @@ function loginC(event:Event){
     right: 0;
 }
 .button2{
+    width: 100px;
+    height: 40px;
+    font-size: 20px;
     vertical-align:middle
 }
 .right{
     vertical-align:middle;
+    width: 100px;
+    height: 40px;
+    font-size: 20px;
 }
 .flex{
     display: flex;
-    flex:2;
     overflow: hidden;
-    flex-direction: column;
 }
 .Text1{
     margin-top: 0;
@@ -94,13 +105,15 @@ function loginC(event:Event){
     rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px;
 }
 .SignUpButton{
+    float: left;
     border: none;
-    background-color:#2C2C2CFF;
+    background-color:rgba(0,0,0,0);
     color:gray;
     font-size: auto;
     width: 5vw;
     height: 5vw;
-    padding: 1vw 1vw;
+    padding: 0vw 1vw;
+    margin-left: -0.1vw;
 }
 .SignUpButton:hover{
     color: white;

@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import type { RouteRecordRaw } from 'vue-router';
+import { SideBarStore } from './stores/sidebar';
 export default defineComponent({
     props:{
         PageList:Array<RouteRecordRaw>
@@ -14,6 +15,7 @@ export default defineComponent({
         }
         return(
             {
+                stores:SideBarStore(),
                 PageList:temp
             }
         );
@@ -22,7 +24,7 @@ export default defineComponent({
 
 </script>
 <template>
-    <div class="TopList">
+    <div class="TopList" :class="stores.showAddon?'l2':'l1'">
         <router-link v-bind:to="item.path" type="button" class="DaoHang" v-for="item in PageList" :class="item.path==$route.path ? 'DaoHang2' : ''">{{ item.name }}</router-link >
     </div>
 </template>
@@ -30,6 +32,12 @@ export default defineComponent({
 .YinYing{
     box-shadow: rgb(0 0 0 / 20%) 0px 2px 1px -1px,
               rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px;
+}
+.l1{
+    width: 95vw;
+}
+.l2{
+    width: 88vw;
 }
 .TopList{
     display: flex;
@@ -39,9 +47,10 @@ export default defineComponent({
     margin: 0;
     text-align:center;
     height: 10vh;
-    width: 95vw;
     background-color: #eee;
     border-bottom: 4px solid white;
+    transition: 0.5s;
+
 }
 .DaoHang{
     background-color: rgb(0 0 0 / 5%);

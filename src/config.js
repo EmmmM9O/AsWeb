@@ -1,5 +1,10 @@
-module.exports={
-    port:'4000',
+
+
+module.exports=
+    {
+        jwtSecretKey: 'sowjxowfitskrjz166437jwjd',
+    port:'4000',//后端
+    port2:'3000',//前端
     Email:{
 
     },
@@ -7,7 +12,7 @@ module.exports={
         host:"localhost",
         user: 'root',
         password: 'password',
-        port: '3005',
+        port: 3005,
         database: 'login'
-    }
+    } 
 }
