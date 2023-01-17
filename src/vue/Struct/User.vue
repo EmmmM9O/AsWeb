@@ -19,6 +19,8 @@ function loginC(event:Event){
     if(page.value==LogIn) page.value=Nor;
     else page.value=LogIn;
 }
+async function none(){};
+const k:Ref<()=>Promise<void>>=ref(none);
 </script>
 <template>
     <button class="SignUpButton" @mouseleave="color='gray'" @mouseenter="color='white'" @click="showUi=!showUi">
@@ -37,12 +39,13 @@ function loginC(event:Event){
                         <button class="button2" @click="signupC"><span>注册</span></button>
                     </div>
                     <KeepAlive>
-                        <component :is="page" />
+                        <component :is="page" @getRun="(v:()=>Promise<void>)=>{k=v}"/>
                     </KeepAlive>
                 </div>
             </template>
             <template #footer>
                 <div class="flex1">
+                <button class="button2" @click="k" v-if="page!=Nor"><span>提交</span></button>
                 <button @click="showUi=!showUi" class="right">关闭</button>
                 </div>
             </template>
@@ -52,7 +55,7 @@ function loginC(event:Event){
 <style scoped>
 .flex1{
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: row;
     align-items:flex-end;
 }
 .button2 span {
@@ -84,7 +87,6 @@ function loginC(event:Event){
     width: 100px;
     height: 40px;
     font-size: 20px;
-    vertical-align:middle
 }
 .right{
     vertical-align:middle;
@@ -105,7 +107,7 @@ function loginC(event:Event){
     rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px;
 }
 .SignUpButton{
-    float: left;
+    float: right;
     border: none;
     background-color:rgba(0,0,0,0);
     color:gray;

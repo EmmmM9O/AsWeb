@@ -1,0 +1,26 @@
+.erron{
+    color:red;
+}
+.InputK{
+    height: 40px;
+    width: auto;
+    padding: 8px 8px;
+    border-radius: 4px;
+    background-color: #eee;
+    font-size: 30px;
+    line-height:40px;
+    border: 2px solid white;
+}
+.ButtonK{
+    float: left;
+    border:none;
+    border-radius: 4px;
+    background-color:#eee;
+    border: 2px solid white;
+    color:black;
+    vertical-align:middle;
+    font-size: 20px;
+    width: 100px;
+    height: 40px;
+
+}

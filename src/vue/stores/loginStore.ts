@@ -18,6 +18,9 @@ export const loginStore = defineStore("login", {
         },
         ChangeCode(v:string|null){
             this.code=v;
+        },
+        ChangeName(v:string){
+            this.UserName=v;
         }
     },
     persist:{

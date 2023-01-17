@@ -9,13 +9,13 @@ const color:Ref<string> =ref('gray');
 </script>
 <template>
     <div class="SideBar YinYing" :class="stores.showAddon?'Addon':''">
-        <div class="SideBar-list" name="list1">
+        <div class="SideBar-list" :class="stores.showAddon?'SideBar-list2':''">
         <button class="dButton" @click="stores.changet()">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title/><path d="M19,8H5A1,1,0,0,1,5,6H19a1,1,0,0,1,0,2Z" :fill="color"/><path d="M19,13H5a1,1,0,0,1,0-2H19a1,1,0,0,1,0,2Z" :fill="color"/><path d="M19,18H5a1,1,0,0,1,0-2H19a1,1,0,0,1,0,2Z" :fill="color"/></svg>
         </button>
         <span class="SideBar-span" :style="{opacity:stores.showAddon?1:0}">列表</span>
         </div>
-        <div class="SideBar-list">
+        <div class="SideBar-list" :class="stores.showAddon?'SideBar-list2':''">
             <User/>
             <span class="SideBar-span" :style="{opacity:stores.showAddon?1:0}">用户</span>
         </div>
@@ -54,7 +54,7 @@ const color:Ref<string> =ref('gray');
     display: inline-flex;
     flex-wrap: nowrap;
     flex-direction: row;
-    width: 100%;
+    width: 5vw;
     height: 5vw;
     margin-top: 4px;
     transition: 0.5s;
@@ -69,6 +69,9 @@ const color:Ref<string> =ref('gray');
     margin-left: 5vw;
     transition: 0.6s;
     opacity: 0;
+}
+.SideBar-list2{
+    width: 12vw;
 }
 .SideBar-list:hover{
     margin-left: 6px;
