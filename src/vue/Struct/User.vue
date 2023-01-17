@@ -44,7 +44,7 @@ const k:Ref<()=>Promise<void>>=ref(none);
                 </div>
             </template>
             <template #footer>
-                <div class="flex1">
+                <div>
                 <button class="button2" @click="k" v-if="page!=Nor"><span>提交</span></button>
                 <button @click="showUi=!showUi" class="right">关闭</button>
                 </div>
@@ -54,9 +54,7 @@ const k:Ref<()=>Promise<void>>=ref(none);
 </template>
 <style scoped>
 .flex1{
-    display: flex;
     flex-direction: row;
-    align-items:flex-end;
 }
 .button2 span {
     cursor: pointer;
@@ -93,6 +91,7 @@ const k:Ref<()=>Promise<void>>=ref(none);
     width: 100px;
     height: 40px;
     font-size: 20px;
+    float:right;
 }
 .flex{
     display: flex;

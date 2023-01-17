@@ -21,6 +21,7 @@ async function login(){
         }
         else{
             text.value='登录成功';
+            console.log(result);
             store.ChangeLoginState(1);
             store.ChangeName(result.data.result.name);
             store.ChangeToken(result.data.token);
