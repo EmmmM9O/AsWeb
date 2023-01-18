@@ -3,24 +3,29 @@ import { ref } from "vue";
 import type { Ref } from "vue";
 import axios from 'axios'
 import { loginStore } from "@/vue/stores/loginStore";
+import { ModalStore } from "@/vue/stores/Modal";
 const store=loginStore();
 const passwordReg =/^[0-9A-Za-z]{4,15}$/;
 const name:Ref<string>=ref("");
 const password:Ref<string>=ref("");
 const text:Ref<string>=ref("");
-const emit=defineEmits<{
-    (e: 'getRun', id: ()=>Promise<void>): void
-}>();
+const store2=ModalStore();
+store2.cgetL(login);
+store2.cgetN(login);
 async function login(){
+    if(!passwordReg.test(password.value)){
+        text.value='密码格式错误';
+    }
     await axios.post('http://localhost:3000/api/user/login',{
         'name':name.value,
         'password':password.value
     }).then(result=>{
-        if(result.data.state!=1){
-            text.value="登录出错";
+        console.log(result);
+        if(result.data.state!=1||result.data.erron!=null){
+            text.value=result.data.erron;
         }
         else{
-            text.value='登录成功';
+            text.value='登录成功'+result;
             console.log(result);
             store.ChangeLoginState(1);
             store.ChangeName(result.data.result.name);
@@ -31,7 +36,7 @@ async function login(){
         text.value=e;
     })
 }
-emit('getRun',login)
+
 
 </script>
 <template>

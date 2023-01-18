@@ -2,6 +2,7 @@
 import {ref,onUnmounted} from 'vue';
 import type {Ref} from 'vue';
 import axios from 'axios'
+import { ModalStore } from '@/vue/stores/Modal';
 const mail:Ref<string>=ref("");
 const name:Ref<string>=ref("");
 const password1:Ref<string>=ref("");
@@ -9,13 +10,13 @@ const password2:Ref<string>=ref("");
 const vccode:Ref<string>=ref("");
 const passwordReg =/^[0-9A-Za-z]{4,15}$/;
 const mailReg=/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
-const vccodeReg=/^[1-9]*$/;
+const vccodeReg=/^[0-9]*$/;
 const token:Ref<string>=ref('');
 const text:Ref<string>=ref('');
 const buttonT:Ref<string> =ref('发送');
-const emit=defineEmits<{
-    (e: 'getRun', id: ()=>Promise<void>): void
-}>();
+const store=ModalStore();
+store.cgetS(vccodF)
+store.cgetN(vccodF);
 let time=setInterval(()=>{
     if(buttonT.value!='发送'){
         let sum=Number(buttonT.value);
@@ -36,10 +37,18 @@ async function vccodF() {
         text.value='验证码格式错误';
         return ;
     }
+	console.log(vccode.value);
     await axios.post('http://localhost:3000/api/user/vccode',{
         'token':token.value,
         'vccode':vccode.value
-    })
+    }).then(e=>{
+        console.log(e);
+        if(e.data.state!=1){
+            text.value=e.data.erron;
+        }else{
+            text.value='注册成功'
+        }
+    });
 }
 async function signup(){
     if(buttonT.value!='发送'){
@@ -66,14 +75,15 @@ async function signup(){
         if(typeof res.data.token==='string'){
             token.value=res.data.token;
             buttonT.value='60';
-        }else{
-            text.value="登录失败";
+            text.value='发送成功';
+        }
+        if(res.data.erron!=null){
+            text.value=res.data.erron;
         }
     }).catch(err=>{
         text.value=err;
     })
 }
-emit('getRun',vccodF);
 </script>
 <template>
     <div class="flex coflex">
@@ -85,6 +95,7 @@ emit('getRun',vccodF);
             <input class="InputK in" v-model="vccode" placeholder="验证码" :class="vccodeReg.test(vccode)||vccode.length<=0?'':'erron'"/>
             <button class="ButtonK" @click="signup"><span>{{ buttonT }}</span></button>
         </div>
+        {{ text }}
     </div>
 </template>
 <style scoped>

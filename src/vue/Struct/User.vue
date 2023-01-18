@@ -6,6 +6,8 @@ import type { Ref } from 'vue'
 import LogIn from './ModalPages/LogIn.vue';
 import SignUp from './ModalPages/SignUp.vue';
 import Nor from './ModalPages/Nor.vue'
+import { ModalStore } from '../stores/Modal';
+const store2=ModalStore();
 const color:Ref<string>=ref('gray');
 const showUi:Ref<boolean>=ref(false);
 const store = loginStore();
@@ -14,13 +16,20 @@ const page:Ref<unknown>=ref(Nor);
 function signupC(evenr:Event){
     if(page.value==SignUp) page.value=Nor;
     else page.value=SignUp;
+    let w=store2.getS;
+    if(w!=undefined){
+        store2.cgetN(w);
+    }
 }
 function loginC(event:Event){
     if(page.value==LogIn) page.value=Nor;
     else page.value=LogIn;
+    let w=store2.getL;
+    if(w!=undefined){
+        store2.cgetN(w);
+    }
 }
-async function none(){};
-const k:Ref<()=>Promise<void>>=ref(none);
+
 </script>
 <template>
     <button class="SignUpButton" @mouseleave="color='gray'" @mouseenter="color='white'" @click="showUi=!showUi">
@@ -30,6 +39,7 @@ const k:Ref<()=>Promise<void>>=ref(none);
         <Modal :show="showUi" :showclose="showclose" @close="showUi=!showUi">
             <template #header>
                 <h1 class="Text1">用户:{{ store.UserName }}</h1>
+                <h3>{{ store.token }}</h3>
             </template>
             <template #body>
                 <div v-if="store.LoginState!=1">
@@ -39,13 +49,16 @@ const k:Ref<()=>Promise<void>>=ref(none);
                         <button class="button2" @click="signupC"><span>注册</span></button>
                     </div>
                     <KeepAlive>
-                        <component :is="page" @getRun="(v:()=>Promise<void>)=>{k=v}"/>
+                        <component :is="page"/>
                     </KeepAlive>
+                </div>
+                <div v-else>
+                    <button class="button2" @click="store.ChangeLoginState(0)">退出</button>
                 </div>
             </template>
             <template #footer>
                 <div>
-                <button class="button2" @click="k" v-if="page!=Nor"><span>提交</span></button>
+                <button class="button2" @click="store2.now" v-if="page!=Nor"><span>提交</span></button>
                 <button @click="showUi=!showUi" class="right">关闭</button>
                 </div>
             </template>
