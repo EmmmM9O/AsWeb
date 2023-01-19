@@ -39,7 +39,6 @@ function loginC(event:Event){
         <Modal :show="showUi" :showclose="showclose" @close="showUi=!showUi">
             <template #header>
                 <h1 class="Text1">用户:{{ store.UserName }}</h1>
-                <h3>{{ store.token }}</h3>
             </template>
             <template #body>
                 <div v-if="store.LoginState!=1">
@@ -124,9 +123,9 @@ function loginC(event:Event){
     background-color:rgba(0,0,0,0);
     color:gray;
     font-size: auto;
-    width: 5vw;
-    height: 5vw;
-    padding: 0vw 1vw;
+    width: 80px;
+    height: 80px;
+    padding: 0vw 10px;
     margin-left: -0.1vw;
 }
 .SignUpButton:hover{

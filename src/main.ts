@@ -17,3 +17,9 @@ const router = createRouter({
 const app = createApp(App);
 app.use(router).use(stores);
 app.mount("#app");
+app.config.errorHandler = (err, vm,info) => {
+    console.log('errorHandle', err, vm, info);
+    // err，错误对象
+    // vm，发生错误的组件实例
+    // info，Vue特定的错误信息，例如错误发生的生命周期、错误发生的事件
+}

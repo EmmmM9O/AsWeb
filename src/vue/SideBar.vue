@@ -23,16 +23,16 @@ const color:Ref<string> =ref('gray');
 </template>
 <style scoped>
 .Addon{
-    width:12vw;
+    width:200px
 }
 
 .dButton{
     background-color: rgba(0, 0, 0, 0);
     float: left;
     border: none;
-    width: 5vw;
-    height: 5vw;
-    padding: 1vw 1vw;
+    width: 80px;
+    height: 80px;
+    padding: 0px 0px;
 }
 .SideBar{
     opacity:0.9;
@@ -47,23 +47,23 @@ const color:Ref<string> =ref('gray');
     padding-bottom: 2vh;
     background-color: #2C2C2CFF;
     transition: 0.5s;
-    width: 5vw;
+    width: 80px;
     
 }
 .SideBar-list{
     display: inline-flex;
     flex-wrap: nowrap;
     flex-direction: row;
-    width: 5vw;
-    height: 5vw;
+    width: 80px;
+    height: 80px;
     margin-top: 4px;
     transition: 0.5s;
 }
 
 .SideBar-span{
     color:#eee;
-    line-height: 5vw;
-    font-size: 30px;
+    line-height:80px;
+    font-size: 55px;
     position: absolute;
     white-space:nowrap;
     margin-left: 5vw;
@@ -71,7 +71,7 @@ const color:Ref<string> =ref('gray');
     opacity: 0;
 }
 .SideBar-list2{
-    width: 12vw;
+    width: 200px;
 }
 .SideBar-list:hover{
     margin-left: 6px;
@@ -81,7 +81,7 @@ const color:Ref<string> =ref('gray');
 }
 
 .SideBar:hover{
-    width: 12vw;
+    width: 200px;
 }
 .YinYing{
       box-shadow: rgb(0 0 0 / 20%) 0px 2px 1px -1px,

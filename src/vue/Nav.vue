@@ -34,20 +34,20 @@ export default defineComponent({
               rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px;
 }
 .l1{
-    width: 95vw;
+    width: calc(100vw - 80px);
 }
 .l2{
-    width: 88vw;
+    width: calc(100vw - 200px);
 }
 .TopList{
     z-index: 9980;
     display: flex;
       box-shadow: rgb(0 0 0 / 20%) 0px 2px 0px -1px,
         rgb(0 0 0 / 14%) 0px 1px 0px 0px, rgb(0 0 0 / 12%) 0px 0px 0px 0px;
-    line-height:10vh;
+    line-height:80px;
     margin: 0;
     text-align:center;
-    height: 10vh;
+    height: 80px;
     background-color: #eee;
     border-bottom: 4px solid white;
     transition: 0.5s;
@@ -55,12 +55,12 @@ export default defineComponent({
 }
 .DaoHang{
     background-color: rgb(0 0 0 / 5%);
-    height: 10vh;
+    height: 80px;
     width: auto;
-    font-size: 8vh;
+    font-size: 70px;
     color: #000;
     text-align: center;
-    line-height:10vh;
+    line-height:80px;
     text-decoration:none;
 }
 .DaoHang:hover {

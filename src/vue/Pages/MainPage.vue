@@ -1,8 +1,7 @@
 <script setup lang="ts">
-
+import MapAdd from '../Struct/MapAdd.vue';
 </script>
 <template>
-    
 </template>
 <style scoped>
 .YinYing{
