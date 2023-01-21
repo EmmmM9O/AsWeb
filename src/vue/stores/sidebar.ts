@@ -7,6 +7,7 @@ export const SideBarStore=defineStore('sidebar',{
     ),
     actions:{
         changet(){
+            if(this.showAddon==null) this.showAddon=false;
             this.showAddon=!this.showAddon;
         }
     }

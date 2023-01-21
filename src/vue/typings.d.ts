@@ -2,6 +2,7 @@ import 'vue-router'
 
 declare module 'vue-router' {
     interface RouteMeta {
-        show:boolean
+        show:boolean,
+        icon:any
     }
 }

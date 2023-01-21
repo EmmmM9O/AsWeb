@@ -124,9 +124,9 @@ function loginC(event:Event){
     background-color:rgba(0,0,0,0);
     color:gray;
     font-size: auto;
-    width: 80px;
-    height: 80px;
-    padding: 0vw 10px;
+    width: 48px;
+    height: 48px;
+    padding: 2px 2px;
     margin-left: -0.1vw;
 }
 .SignUpButton:hover{

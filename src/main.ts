@@ -4,9 +4,11 @@ import main from './vue/Pages/MainPage.vue'
 import map from './vue/Pages/MapPage.vue'
 import stores from './vue/stores'
 import {createRouter,createWebHashHistory} from 'vue-router'
+import homeI from './vue/Icons/home.vue'
+import mapI from './vue/Icons/map.vue'
 const routes=[
-    { path: '/', name:"主页",component: main ,meta:{show:true}},
-    { path: '/map',name:"地图", component: map ,meta:{show:true}}
+    { path: '/', name:"主页",component: main ,meta:{show:true,icon:homeI}},
+    { path: '/map',name:"地图", component: map ,meta:{show:true,icon:mapI}}
 ]
 const router = createRouter({
       // 4. 内部提供了 history 模式的实现。为了简单起见，我们在这里使用 hash 模式。

@@ -11,7 +11,7 @@ export default defineComponent({
     <Transition name="modal" class="modal-mask">
         <div v-if="show">
             <div class="modal-wrapper">
-                <div class="modal-container color2 glass">
+                <div class="modal-container glass">
                     <div class="modal-header">
                         <slot name="header"></slot>
                     </div>
@@ -81,6 +81,8 @@ export default defineComponent({
     padding: 20px 30px;
     border-radius: 12px;
     transition: all 0.3s ease;
+    background-color: white;
+
 }
 
 </style>
