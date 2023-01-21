@@ -13,15 +13,15 @@ const name=ref(store.UserName);
 const another=ref('');
 const decs=ref('');
 const text=ref('');
-/*
-const files:Ref<FileList>=ref(new FileList);
+
+const files:Ref<FileList>=ref({} as FileList);
 function onC(event:Event){
     let f=(event.target as HTMLInputElement).files;
     if(f instanceof FileList){
         files.value=f;
     }
 }
-function up(){
+async function up(){
     if(files.value.length<1){
         text.value="你文件呢";
         return;
@@ -34,7 +34,7 @@ function up(){
     formData.append('decs',decs.value);
     if(store.token==null) return ;
     formData.append('token',store.token);
-    axios.post('http://localhost:3000/api/map/upload',formData,{
+    await axios.post('http://localhost:3000/api/map/upload',formData,{
         headers:{
             "Content-type":"multipart/form-data"
         }
@@ -45,10 +45,12 @@ function up(){
             text.value='成功';
             showT.value=false;
         }
-    });
+    }).catch(err=>{
+        if(err) console.error(err);
+    })
     
 }
-*/
+
 </script>
 <template>
     <button class="Icon YinYing ic" @click="showT=!showT">
@@ -71,13 +73,13 @@ function up(){
                         <input class="InputK def" v-model="another" placeholder="作者"/>
                     </div>
                     <input class="InputK def2" v-model="decs" placeholder="简介"/>
-                    <input type="file"/>
-                    {{ text }}
+                    <input type="file" @change="onC"/>
                 </div>
             </template>
             <template #footer>
-                <div>
-                <button class="ButtonK">提交</button>
+                <div class="flex">
+                <span>{{ text }}</span>
+                <button class="ButtonK" @click="up">提交</button>
                 <button @click="showT=!showT" class="ButtonK">关闭</button>
                 </div>
             </template>
@@ -90,10 +92,14 @@ function up(){
     z-index: 9980;
 }
 .ic{
+    margin-left: 6px;
+    margin-right: 6px;
     overflow: hidden;
-    line-height: 50px;
-    font-size: 45px;
+    line-height:50px;
+    font-size: 50px;
     z-index: 9980;
+    width: 50px;
+    height: 50px;
 }
 .ri{
     float: right;

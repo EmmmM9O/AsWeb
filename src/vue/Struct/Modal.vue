@@ -11,7 +11,7 @@ export default defineComponent({
     <Transition name="modal" class="modal-mask">
         <div v-if="show">
             <div class="modal-wrapper">
-                <div class="modal-container YinYing">
+                <div class="modal-container color2 glass">
                     <div class="modal-header">
                         <slot name="header"></slot>
                     </div>
@@ -32,6 +32,8 @@ export default defineComponent({
     </Transition>
 </template>
 <style scoped>
+@import '@/assets/colorful.css';
+
 .YinYing{
         box-shadow: rgb(0 0 0 / 20%) 0px 2px 1px -1px,
         rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px;
@@ -77,9 +79,7 @@ export default defineComponent({
     min-height: 150px;
     margin: 0px auto;
     padding: 20px 30px;
-    background-color: #fff;
-    border-radius: 2px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+    border-radius: 12px;
     transition: all 0.3s ease;
 }
 

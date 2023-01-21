@@ -1,31 +1,46 @@
 <script setup lang="ts">
 import User from './Struct/User.vue';
-import {ref} from 'vue';
+import {reactive, ref} from 'vue';
 import { SideBarStore } from './stores/sidebar';
-import DefSpan from './Struct/DefSpan.vue';
 import type { Ref } from 'vue';
+import font from '@/assets/fonts/Os.ttf'
 const stores = SideBarStore();
 const color:Ref<string> =ref('gray');
+const fo=reactive({
+    fontFamily: 'Os',
+    src: 'url('+font+')'
+})
 </script>
 <template>
-    <div class="SideBar YinYing" :class="stores.showAddon?'Addon':''">
+    <div class="SideBar" :class="stores.showAddon?'Addon':''">
         <div class="SideBar-list" :class="stores.showAddon?'SideBar-list2':''">
         <button class="dButton" @click="stores.changet()">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title/><path d="M19,8H5A1,1,0,0,1,5,6H19a1,1,0,0,1,0,2Z" :fill="color"/><path d="M19,13H5a1,1,0,0,1,0-2H19a1,1,0,0,1,0,2Z" :fill="color"/><path d="M19,18H5a1,1,0,0,1,0-2H19a1,1,0,0,1,0,2Z" :fill="color"/></svg>
         </button>
-        <span class="SideBar-span" :style="{opacity:stores.showAddon?1:0}">列表</span>
+        <span class="SideBar-span" :class="fo" :style="{opacity:stores.showAddon?1:0}">列表</span>
         </div>
+        <div class="line"></div>
         <div class="SideBar-list" :class="stores.showAddon?'SideBar-list2':''">
             <User/>
-            <span class="SideBar-span" :style="{opacity:stores.showAddon?1:0}">用户</span>
+            <span class="SideBar-span" :class="fo" :style="{opacity:stores.showAddon?1:0}">用户</span>
         </div>
     </div>
 </template>
 <style scoped>
+@import '@/assets/colorful.css';
+
+
 .Addon{
     width:200px
 }
-
+.line{
+    width: 100%;
+    height: 4px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    background-color: black;
+    opacity: 1.2;
+}
 .dButton{
     background-color: rgba(0, 0, 0, 0);
     float: left;
@@ -35,7 +50,8 @@ const color:Ref<string> =ref('gray');
     padding: 0px 0px;
 }
 .SideBar{
-    opacity:0.9;
+    backdrop-filter: blur(18px);
+    border-radius: 12px;
     overflow: hidden;
     align-items: center;
     display: flex;
@@ -45,10 +61,10 @@ const color:Ref<string> =ref('gray');
     margin: 0;
     height: 98vh;
     padding-bottom: 2vh;
-    background-color: #2C2C2CFF;
     transition: 0.5s;
     width: 80px;
-    
+    background-image: linear-gradient(-225deg,rgba(44,216,213,0.5) 0%, rgba(197,193,255,0.5) 56%, rgba(255,186,195,0.5) 100%);
+    opacity:0.6;
 }
 .SideBar-list{
     display: inline-flex;
@@ -61,12 +77,12 @@ const color:Ref<string> =ref('gray');
 }
 
 .SideBar-span{
-    color:#eee;
+    color:black;
     line-height:80px;
     font-size: 55px;
     position: absolute;
     white-space:nowrap;
-    margin-left: 5vw;
+    margin-left:85px;
     transition: 0.6s;
     opacity: 0;
 }

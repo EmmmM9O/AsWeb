@@ -3,7 +3,6 @@ import App from './App.vue'
 import main from './vue/Pages/MainPage.vue'
 import map from './vue/Pages/MapPage.vue'
 import stores from './vue/stores'
-
 import {createRouter,createWebHashHistory} from 'vue-router'
 const routes=[
     { path: '/', name:"主页",component: main ,meta:{show:true}},

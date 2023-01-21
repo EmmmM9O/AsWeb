@@ -83,6 +83,7 @@ function loginC(event:Event){
     transition: 0.5s;
 }
 .button2{
+    background-color: rgba(255,255,255,0.3);
     transition: all 0.5s;
     cursor: pointer;
 }

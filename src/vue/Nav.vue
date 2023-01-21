@@ -29,17 +29,24 @@ export default defineComponent({
     </div>
 </template>
 <style scoped>
+@import '@/assets/colorful.css';
+
 .YinYing{
     box-shadow: rgb(0 0 0 / 20%) 0px 2px 1px -1px,
               rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px;
 }
 .l1{
     width: calc(100vw - 80px);
+
 }
 .l2{
     width: calc(100vw - 200px);
 }
 .TopList{
+    opacity:0.6;
+    background-color: rgba(0,0,0,0.3);
+    backdrop-filter: blur(18px);
+    border-radius: 12px;
     z-index: 9980;
     display: flex;
       box-shadow: rgb(0 0 0 / 20%) 0px 2px 0px -1px,
@@ -49,12 +56,12 @@ export default defineComponent({
     text-align:center;
     height: 80px;
     background-color: #eee;
-    border-bottom: 4px solid white;
+    border-bottom : 4px solid rgba(0,0,0,0.3);
     transition: 0.5s;
-
 }
 .DaoHang{
-    background-color: rgb(0 0 0 / 5%);
+    border-radius: 12px;
+    background-color: rgba(0,0,0,0);
     height: 80px;
     width: auto;
     font-size: 70px;
@@ -64,7 +71,7 @@ export default defineComponent({
     text-decoration:none;
 }
 .DaoHang:hover {
-  background-color: white;
+  background-color:rgba(255,255,255,1);
   color: black;
 }
 .DaoHang2{
