@@ -74,6 +74,7 @@ async function up(){
                     </div>
                     <input class="InputK def2" v-model="decs" placeholder="简介"/>
                     <input type="file" @change="onC"/>
+                    <span>请上传一个ZIP文件里面包含地图和icon.png(图片)</span>
                 </div>
             </template>
             <template #footer>
@@ -92,6 +93,7 @@ async function up(){
     z-index: 9980;
 }
 .ic{
+
     margin-left: 6px;
     margin-right: 6px;
     overflow: hidden;

@@ -4,6 +4,7 @@ import type { Ref } from "vue";
 import axios from 'axios'
 import { loginStore } from "@/vue/stores/loginStore";
 import { ModalStore } from "@/vue/stores/Modal";
+import configs from '@/config';
 const store=loginStore();
 const passwordReg =/^[0-9A-Za-z]{4,15}$/;
 const name:Ref<string>=ref("");
@@ -16,7 +17,7 @@ async function login(){
     if(!passwordReg.test(password.value)){
         text.value='密码格式错误';
     }
-    await axios.post('http://localhost:3000/api/user/login',{
+    await axios.post(configs.host+'/api/user/login',{
         'name':name.value,
         'password':password.value
     }).then(result=>{

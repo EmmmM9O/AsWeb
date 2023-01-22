@@ -3,6 +3,7 @@ import {ref,onUnmounted} from 'vue';
 import type {Ref} from 'vue';
 import axios from 'axios'
 import { ModalStore } from '@/vue/stores/Modal';
+import configs from '@/config';
 const mail:Ref<string>=ref("");
 const name:Ref<string>=ref("");
 const password1:Ref<string>=ref("");
@@ -38,7 +39,7 @@ async function vccodF() {
         return ;
     }
 	console.log(vccode.value);
-    await axios.post('http://localhost:3000/api/user/vccode',{
+    await axios.post(configs.host+'/api/user/vccode',{
         'token':token.value,
         'vccode':vccode.value
     }).then(e=>{
@@ -67,7 +68,7 @@ async function signup(){
         text.value='密码不相同!';
         return ;
     }
-    await axios.post('http://localhost:3000/api/user/signup',{
+    await axios.post(configs.host+'/api/user/signup',{
         'mail':mail.value,
         'password':password1.value,
         'name':name.value

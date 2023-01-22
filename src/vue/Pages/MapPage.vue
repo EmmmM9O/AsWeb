@@ -1,31 +1,25 @@
 <script setup lang="ts">
 import axios from 'axios';
 import { ref } from 'vue';
-import type { Ref } from 'vue';
 import MapAdd from '../Struct/MapAdd.vue';
+import {mapStore} from '@/vue/stores/map';
+import configs from '@/config';
+import Modal from '../Struct/Modal.vue';
+const stores=mapStore();
 const ser=ref('');
-const page=ref(1);
-const PageE=ref(12);
 const text=ref('');
-interface Map{
-    id:number,
-    name:string,
-    upload:string,
-    decs:string,
-    MapPath:string,
-    another:string
-}
-const ths:Ref<Array<Map>>=ref([]);
 async function Update(){
-    await axios.post('http://localhost:3000/api/map/getMap/PageAll',{
-        page:page.value,
-        pageSize:PageE.value
+    let wa=ser.value.length<=0 ? configs.host+'/api/map/getMap/PageAll' : configs.host+'/api/map/getMap/PageName';
+    await axios.post(wa,{
+        page:stores.page,
+        pageSize:stores.pageSize,
+        sea:ser.value
     }).then(res=>{
         if(res.data.state!=1){
             text.value=res.data.erron;
             return ;
         }
-        ths.value=JSON.parse(JSON.stringify(res.data.result));
+        stores.changeMap(JSON.parse(JSON.stringify(res.data.result)));
         text.value="刷新成功";
     }).catch(err=>{
         text.value=err;
@@ -33,32 +27,33 @@ async function Update(){
 }
 Update();
 function remove(){
-    page.value=Math.max(page.value-1,1);
+    stores.changePage(Math.max(stores.page-1,1));
     Update();
 }
 function add() {
-    if(ths.value.length<PageE.value){
+    if(stores.maps.length<stores.pageSize){
         return ;
     }
-    page.value++;
+    stores.changePage(stores.page++);
     Update();
 }
+
 </script>
 <template>
     <div class="flex flex1 coflex s" >
         <div class="top flex YinYing">
-            <input placeholder="搜索" v-model="ser" class="InputK df def"/>
-        <div class="line"></div>
+            <input placeholder="搜索" v-model="ser" class="InputK df def" @change="Update()"/>
+            <button @click="Update()" class="ButtonK">刷新</button>
             <MapAdd/>
         </div>
         <div class="flex data">
-        <div v-for="item in ths">
-            <div class="Map YinYing">
+        <div v-for="item in stores.maps">
+            <div class="Map YinYing" @click="stores.turn();stores.cho(item)">
                 <div class="mapTop">
                 {{item.id+':'+item.name }}
                 </div>
                 <div class="MapIcon">
-                    <img :src="'http://localhost:3000/api/map/getPng/'+item.id" class="ico"/>
+                    <img :src="configs.host+'/api/map/getPng/'+item.id" class="ico"/>
                 </div>
                 <div class="mapTop">
                     {{ '上传者'+item.upload }}
@@ -69,15 +64,42 @@ function add() {
         <div class="footer">
             <div class="con">
             <button class="ButtonK buf2" @click="remove()">{{ '<' }}</button>
-            <button class="ButtonK buf2">{{ page }}</button>
+            <button class="ButtonK buf2">{{ stores.page }}</button>
             <button class="ButtonK buf2" @click="add()">{{ '>' }}</button>
             </div>
         </div>
     </div>
+    <Teleport to="body">
+        <Modal :show="stores.show" :showclose="false" @close="stores.turn()" v-if="stores.mapNow!=null">
+            <template #header>
+                <h1>{{ stores.mapNow==null?'none':stores.mapNow.id}}地图:{{ stores.mapNow==null?'none':stores.mapNow.name}}</h1>
+                <h4>作者:{{ stores.mapNow==null?'none':stores.mapNow.another}}::上传者:{{ stores.mapNow==null?'none':stores.mapNow.upload}}</h4>
+            </template>
+            <template #body>
+                <img :src="stores.mapNow==null?'none':configs.host+'/api/map/getPng/'+ String(stores.mapNow.id)" class="ico2"/>
+            </template>
+            <template #footer>
+                <div class="fsa">
+                    <a class="ButtonK" :href="configs.host+'/api/map/getMap/ById/'+String(stores.mapNow.id)">下载</a>
+                    <button class="ButtonK" @click="stores.turn()">取消</button>
+                </div>
+            </template>
+        </Modal>
+    </Teleport>
 </template>
 <style scoped>
 @import '@/assets/Input.css';
+.fsa{
+    display: flex;
+    justify-content: space-around;
+}
+.ico2{
+    width: 20vw;
+    height: 20vw;
+}
 .ico{
+    margin-left: 20px;
+    margin-right: 20px;
     width: 120px;
     height: 120px;
 }
@@ -164,7 +186,8 @@ function add() {
     flex:1;
     justify-content:space-between;
     z-index: 9980;
-    width: 100%;
+    width: calc(100% - 20px);
+    padding: 20px 0px;
     height: 50px;
     margin:6px;
 }

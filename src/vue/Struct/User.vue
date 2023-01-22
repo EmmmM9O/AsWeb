@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref,reactive } from 'vue';
 import Modal from './Modal.vue'
 import { loginStore } from '@/vue/stores/loginStore'
 import type { Ref } from 'vue'
@@ -7,6 +7,9 @@ import LogIn from './ModalPages/LogIn.vue';
 import SignUp from './ModalPages/SignUp.vue';
 import Nor from './ModalPages/Nor.vue'
 import { ModalStore } from '../stores/Modal';
+import { SideBarStore } from '@/vue/stores/sidebar';
+import font from '@/assets/fonts/Os.ttf'
+const sideBar=SideBarStore();
 const store2=ModalStore();
 const color:Ref<string>=ref('gray');
 const showUi:Ref<boolean>=ref(false);
@@ -29,12 +32,18 @@ function loginC(event:Event){
         store2.cgetN(w);
     }
 }
-
+const fo=reactive({
+    fontFamily: 'Os',
+    src: 'url('+font+')'
+})
 </script>
 <template>
-    <button class="SignUpButton" @mouseleave="color='gray'" @mouseenter="color='white'" @click="showUi=!showUi">
-        <svg enable-background="new 0 0 32 32" id="Stock_cut" version="1.1" viewBox="0 0 32 32" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc/><g><circle cx="16" cy="16" fill="none" r="15" :stroke="color" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/><path d="M26,27L26,27   c0-5.523-4.477-10-10-10h0c-5.523,0-10,4.477-10,10v0" fill="none" :stroke="color" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/><circle cx="16" cy="11" fill="none" r="6" :stroke="color" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/></g></svg>
-    </button>
+    <div class="SideBar-list" :class="sideBar.showAddon?'SideBar-list2':''"  @click="showUi=!showUi">
+        <button class="SignUpButton" @mouseleave="color='gray'" @mouseenter="color='white'">
+            <svg enable-background="new 0 0 32 32" id="Stock_cut" version="1.1" viewBox="0 0 32 32" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><desc/><g><circle cx="16" cy="16" fill="none" r="15" :stroke="color" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/><path d="M26,27L26,27   c0-5.523-4.477-10-10-10h0c-5.523,0-10,4.477-10,10v0" fill="none" :stroke="color" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/><circle cx="16" cy="11" fill="none" r="6" :stroke="color" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/></g></svg>
+         </button>
+        <span class="SideBar-span s1" :class="fo" :style="{opacity:sideBar.showAddon?1:0}">用户</span>
+    </div>
     <Teleport to="body">
         <Modal :show="showUi" :showclose="showclose" @close="showUi=!showUi">
             <template #header>
@@ -58,13 +67,31 @@ function loginC(event:Event){
             <template #footer>
                 <div>
                 <button class="button2" @click="store2.now" v-if="page!=Nor"><span>提交</span></button>
-                <button @click="showUi=!showUi" class="right">关闭</button>
+                <button @click="showUi=!showUi" class="right button2">关闭</button>
                 </div>
             </template>
         </Modal>
     </Teleport>
 </template>
 <style scoped>
+.dButton{
+    background-color: rgba(0, 0, 0, 0);
+    float: left;
+    border: none;
+    width: 50px;
+    height: 50px;
+    padding: 0px 0px;
+}
+.SideBar-list{
+    display: inline-flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    width: 100%;
+    height: 50px;
+    margin-top: 0px;
+    transition: 0.5s;
+    flex:0;
+}
 .flex1{
     flex-direction: row;
 }
