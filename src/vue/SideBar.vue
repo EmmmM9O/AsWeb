@@ -8,6 +8,8 @@ import { useRouter, type RouteRecordRaw } from 'vue-router';
 import github from './Icons/github.vue';
 import qq from './Icons/qq.vue';
 import mdt from '@/assets/icon.png'
+import community from './Icons/community.vue';
+import setting from './Icons/setting.vue';
 const stores = SideBarStore();
 const color:Ref<string> =ref('gray');
 const fo=reactive({
@@ -34,24 +36,36 @@ for(let i of router.options.routes){
         <button class="dButton">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title/><path d="M19,8H5A1,1,0,0,1,5,6H19a1,1,0,0,1,0,2Z" :fill="color"/><path d="M19,13H5a1,1,0,0,1,0-2H19a1,1,0,0,1,0,2Z" :fill="color"/><path d="M19,18H5a1,1,0,0,1,0-2H19a1,1,0,0,1,0,2Z" :fill="color"/></svg>
         </button>
-        <span class="SideBar-span" :class="fo" :style="{opacity:stores.showAddon?1:0}">列表</span>
+        <span class="SideBar-span s1" :class="fo" :style="{opacity:stores.showAddon?1:0}">列表</span>
         </div>
         <div class="line"></div>
         <div class="SideBar-list" :class="stores.showAddon?'SideBar-list2':''">
             <User/>
-            <span class="SideBar-span" :class="fo" :style="{opacity:stores.showAddon?1:0}">用户</span>
+            <span class="SideBar-span s1" :class="fo" :style="{opacity:stores.showAddon?1:0}">用户</span>
         </div>
+        <div class="SideBar-list" :class="stores.showAddon?'SideBar-list2':''">
+            <button class="dButton">
+                <community/>
+            </button>
+            <span class="SideBar-span s1" :class="fo" :style="{opacity:stores.showAddon?1:0}">社区</span>
+
         </div>
-        <div>
+        <div class="SideBar-list" :class="stores.showAddon?'SideBar-list2':''">
+            <button class="dButton">
+                <setting/>
+            </button>
+            <span class="SideBar-span s1" :class="fo" :style="{opacity:stores.showAddon?1:0}">设置</span>
+        </div>
         <div class="line"></div>
             <div class="flex" v-for="item in temp">
             <router-link v-bind:to="item.path" class="SideBar-list g" :class="[item.path==$route.path?'SideBar-h':'',stores.showAddon?'SideBar-list2':'']">
                 <button class="dButton">
                     <component :is="item.meta?.icon"/>
                 </button>
-                <span class="SideBar-span" :class="fo" :style="{opacity:stores.showAddon?1:0}">{{ item.name }}</span>
+                <span class="SideBar-span s1" :class="fo" :style="{opacity:stores.showAddon?1:0}">{{ item.name }}</span>
             </router-link>
             </div>
+        <div class="line"></div>
         </div>
         <div class="list">
             <div class="SideBar-list" :class="stores.showAddon?'SideBar-list2':''">
@@ -64,13 +78,13 @@ for(let i of router.options.routes){
                 <a class="dButton" href="ohno">
                     <qq/>
                 </a>
-                <span class="SideBar-span" :class="fo" :style="{opacity:stores.showAddon?1:0}">QQ</span>
+                <span class="SideBar-span s1" :class="fo" :style="{opacity:stores.showAddon?1:0}">QQ</span>
             </div>
             <div class="SideBar-list" :class="stores.showAddon?'SideBar-list2':''">
                 <div class="dButton">
-                <img :src="'url('+mdt+')'" width="50" height="50"/>
+                <img :src="mdt" width="50" height="50"/>
                 </div>
-                <span class="SideBar-span s2" :class="fo" :style="{opacity:stores.showAddon?1:0}">mindustry</span>
+                <span class="SideBar-span s2" :class="fo" :style="{opacity:stores.showAddon?1:0}" >mindustry</span>
             </div>
         </div>
     </div>
@@ -80,6 +94,9 @@ for(let i of router.options.routes){
 @import '@/assets/colorful.css';
 .s2{
     font-size: 25px;
+}
+.s1{
+    font-size:45px
 }
 .red{
     background-color: red;
@@ -106,6 +123,7 @@ for(let i of router.options.routes){
     flex:0;
     height: auto;
     width: 100%;
+    background-color: rgba(0,0,0,0.1);
 }
 .Addon2{
     width: 50px;
@@ -122,11 +140,12 @@ for(let i of router.options.routes){
     justify-content: center
 }
 .line{
+    transition: 0.5s;
     width: 100%;
     height: 4px;
     margin-top: 2px;
     margin-bottom: 2px;
-    background-color: rgba(0,0,0,0.6);
+    background-color: rgba(0,0,0,0.1);
     opacity: 1;
 }
 .dButton{
@@ -154,8 +173,7 @@ for(let i of router.options.routes){
     height: 100vh;
     padding-bottom: 0vh;
     transition: 0.5s;
-    opacity:0.6;
-    background-color: rgba(0,0,0,0.7);
+    background-color:#425066;
     justify-content:space-between;
 }
 .SideBar-list{
@@ -172,7 +190,6 @@ for(let i of router.options.routes){
 .SideBar-span{
     color:white;
     line-height:50px;
-    font-size: 45px;
     position: absolute;
     white-space:nowrap;
     margin-left:55px;

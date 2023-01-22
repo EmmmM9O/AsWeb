@@ -5,16 +5,13 @@ import { reactive } from 'vue';
 import { SideBarStore } from './vue/stores/sidebar';
 const store=SideBarStore();
 const b=reactive({
-    background:'url('+background+') no-repeat',
-    backgroundPosition: 'center center',
-    backgroundSize: 'cover',
-    backgroundAttachment:'fixed'
+    
 })
 </script>
 <template>
     <header class="flex H" :style="b">
         <SideBar/>
-        <div class='other' :class="store.showAddon?'':''">
+        <div class='other' :class="store.showAddon?'l1':'l2'">
             <KeepAlive>
                 <RouterView/>
             </KeepAlive>
@@ -23,6 +20,7 @@ const b=reactive({
 </template>
 <style scoped>
 .H{
+    background: #eee;
     overflow: hidden;
     width: 100%;
     height: 100%;
@@ -46,18 +44,19 @@ z-index:1;
 }
 .l1{
     width: calc(100vw - 150px);
-
+    margin-left: 150px;
+    left: 150px;
 }
 .l2{
     width: calc(100vw - 50px);
+    margin-left: 50px;
+    left: 50px;
 }
 .other{
-    background-color: #eee;
-    width: 100vw;
     transition: 0.5s;
     height: 100vh;
   display:flex;
-  flex:1;
+
   flex-direction: column;
 }
 </style>

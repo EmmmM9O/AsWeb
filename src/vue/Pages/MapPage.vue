@@ -48,9 +48,9 @@ function add() {
     <div class="flex flex1 coflex s" >
         <div class="top flex YinYing">
             <input placeholder="搜索" v-model="ser" class="InputK df def"/>
+        <div class="line"></div>
             <MapAdd/>
         </div>
-        <div class="line"></div>
         <div class="flex data">
         <div v-for="item in ths">
             <div class="Map YinYing">
@@ -101,7 +101,7 @@ function add() {
     width: 100%;
     height: 6px;
     flex-basis: 6px;
-    background-color: gray;
+    background-color: #eee;
 }
 .con{
     display: flex;
@@ -153,7 +153,7 @@ function add() {
     background-color: white;
     z-index: 9980;
     border-radius: 12px;
-    border : 2px solid gray;
+    border : 2px solid #eee;
 }
 .def{
     margin-left: 6px;
