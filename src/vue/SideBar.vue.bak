@@ -3,7 +3,22 @@ import {ref} from 'vue';
 import { ElMessage } from 'element-plus'
 import {User,Setting,Calendar,Plus,More,House,Reading} from '@element-plus/icons-vue'
 import LogIn from './Struct/LogIn.vue';
-import LogOn from './Struct/LogOn.vue';
+import { defineProps ,defineEmits,reactive,ref} from 'vue';
+import {ElMessageBox} from 'element-plus'
+const handleClose = (done: () => void) => {
+    if(form.name.length<=0||form.password.length<=0){
+        done();
+        return ;
+    }
+    ElMessageBox.confirm('你确定？')
+    .then(() => {
+        done()
+    });
+}
+const form=reactive({
+    name:'',
+    password:''
+})
 const show=ref(false);
 const LogInShow=ref(false);
 const LogOnShow=ref(false);
@@ -30,7 +45,7 @@ const LogOnShow=ref(false);
             </template>
             <el-menu-item-group title="管理">
                 <el-menu-item index="2-1" @click="LogInShow=!LogInShow">登录</el-menu-item>
-                <el-menu-item index="2-2" @click="LogOnShow=!LogOnShow">注册</el-menu-item>
+                <el-menu-item index="2-2">注册</el-menu-item>
             </el-menu-item-group>
             <el-menu-item-group title="账户">
                 <el-menu-item index="2-3" @click="ElMessage.error('咕咕咕')">签到</el-menu-item>
@@ -57,7 +72,7 @@ const LogOnShow=ref(false);
                 <el-menu-item index="5-3">github</el-menu-item>
             </el-menu-item-group>
         </el-sub-menu>
-        <el-divider />
+        <el-divider />u
         <el-menu-item index="6" :class="$route.name=='主页'?'add':''" @click="$router.push('/')">
             <el-icon><House /></el-icon>
             <span class="tx">主页</span>
@@ -69,9 +84,21 @@ const LogOnShow=ref(false);
 
     </el-menu>
 </el-aside>
-<LogIn :show="LogInShow" @change="LogInShow=!LogInShow"/>
-<LogOn :show="LogOnShow" @change="LogOnShow=!LogOnShow"/>
-
+<el-dialog
+        v-modal="LogInShow"
+        title="登录"
+        width="30%"
+        :before-close="handleClose"
+        center
+        align-center
+    >
+    <h2>登录</h2>
+     <template #footer >
+        <span class="dialog-footer">
+        <el-button type="" @click="$LogInShow=!LogInShow">取消</el-button>
+        </span>
+    </template>
+ </el-dialog>
 </template>
 <style>
 .add{
