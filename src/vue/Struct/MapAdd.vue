@@ -1,50 +1,50 @@
 <script setup lang="ts">
 import { defineEmits,defineProps,ref ,reactive} from 'vue';
 import Tags from '@/vue/Struct/Tags.vue';
-import type { UploadProps, UploadUserFile,UploadInstance } from 'element-plus'
+import type { UploadProps, UploadUserFile,UploadInstance ,UploadFile,UploadFiles,UploadRequestOptions} from 'element-plus'
 import { ElMessage } from 'element-plus';
+import config from '@/config';
+import UserStore from '../Stores/User';
+import axios from 'axios';
+const user=UserStore();const g=ref(false);
 const fileList = ref<UploadUserFile[]>([]);
-const uploadRef = ref<UploadInstance>()
+const fileListU = ref<Array<File>>([]);
+const uploadRef = ref<UploadInstance>();
+
 defineProps<{
     show:Boolean
 }>();
-defineEmits<{
+const emits=defineEmits<{
     (e: 'change'): void,
 }>();
 const form=reactive({
     name:'',
     tags:[] as string[],
-    another:'',
+    another:user.name,
     docs:''
 })
 const handleClose = (done: () => void) => {
     ElMessageBox.confirm('你确定?这些将不会保存')
         .then(() => {
+            emits('change')
             done()
         })
         .catch(() => {
         })
 }
-const beforeRemove: UploadProps['beforeRemove'] = (uploadFile, uploadFiles) => {
+const beforeRemove: UploadProps['beforeRemove'] = (uploadFile, _uploadFiles) => {
     return ElMessageBox.confirm(
         `确定删除 ${uploadFile.name} ?`
     ).then(() => true,() => false)};
 const Success: UploadProps['onSuccess'] = (
-  _response,
-  _uploadFile
+  response,
 ) => {
-  ElMessage.success('上传成功');
+    ElMessage.success('上传成功');
+    emits('change');
 }
 const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
     let fileExtension = rawFile.name.substring(rawFile.name.lastIndexOf('.') + 1);
-    let w=[];
-    w=['png','msav'];
-    if(fileList.value.length<=0){
-        for(let i of fileList.value){
-            let fileExtension = i.name.substring(i.name.lastIndexOf('.') + 1);
-            w=w.filter(it=>it!=fileExtension);
-        }
-    }
+    let w=['png','msav'];
       if (!w.includes(fileExtension)) {
           ElMessage.error('错误的文件类型 应为:'+w);
         return false
@@ -53,6 +53,36 @@ const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
             return false
         }
         return true
+}
+const err:UploadProps['onError']=(error: Error, _uploadFile: UploadFile, _uploadFiles: UploadFiles) =>{
+    ElMessage.error(error);
+}
+
+const uploadFile= (options: UploadRequestOptions )=>{
+    fileListU.value.push(options.file);
+    if(fileListU.value.length<2) return ;
+    let data=new FormData();
+    for(let i in fileListU.value){
+        data.append(String(i),fileListU.value[i]);
+    }
+    data.append("name",form.name);
+    data.append("decs",form.docs);
+    data.append("another",form.another);
+    data.append("token",user.token);
+    axios.post(config.host+'/api/map/upload',data,{ headers: {"Content-Type": "multipart/form-data"}})
+    .then(res=>{
+        if(res.data.state!=1){
+            ElMessage.error(res.data.erron);
+            return ;
+        }
+    })
+    .catch(err=>{
+        ElMessage.error(err);
+    })
+
+}
+function submit(){
+    uploadRef.value?.submit();
 }
 </script>
 <template>
@@ -65,10 +95,18 @@ const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
     <el-form :model="form" label-width="80px">
         <el-form-item label="作品信息">
             <el-input v-model="form.name" placeholder="名字" 
-            show-word-limit maxlength="28" minlength="3"
+            show-word-limit maxlength="28" minlength="3" 
             />
             <el-input v-model="form.another" placeholder="作者" 
-            show-word-limit maxlength="28" minlength="3" />
+            show-word-limit maxlength="28" minlength="3"  />
+            <el-switch
+    v-model="g"
+    class="ml-2"
+    inline-prompt
+    style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
+    active-text="格式化"
+    inactive-text="正常化"
+  />
         </el-form-item>
 
         <el-form-item label="简介">
@@ -84,6 +122,8 @@ const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
         <el-form-item label="文件">
             <el-upload v-model:file-list="fileList" multiple :auto-upload="false" ref="uploadRef"
             :before-remove="beforeRemove" :on-success="Success" :before-upload="beforeUpload"
+            :limit="2" :action="config.host+'/api/map/upload'"
+            :on-error="err" :http-request="uploadFile"
             >
             <template #trigger>
                 <el-button type="primary">选择文件</el-button>
@@ -98,6 +138,9 @@ const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
         </el-form-item>
     </el-form>
     <template #footer >
+        <el-button class="ml-3" type="success" @click="submit()">
+            上传
+        </el-button>
         <el-button type="" @click="$emit('change')">取消</el-button>
     </template>
     </el-dialog>

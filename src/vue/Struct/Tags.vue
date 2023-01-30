@@ -18,15 +18,15 @@ interface F{
 }
 const tags:Ref<Array<F>>=ref([
    {
-      key:"mode",
+      key:"模式",
       label:"模式",
       tags:[
-         {value:"s",label:"生存"},
-         {value:"p",label:"PvP"},
-         {value:"s",label:"沙盒"},
-         {value:"a",label:"进攻"},
-         {value:"e",label:"编译器"},
-         {value:"c",label:"自定义"}
+         {value:"生存",label:"生存"},
+         {value:"PVP",label:"PvP"},
+         {value:"沙盒",label:"沙盒"},
+         {value:"进攻",label:"进攻"},
+         {value:"编译器",label:"编译器"},
+         {value:"自定义",label:"自定义"}
       ]
    },
    {
