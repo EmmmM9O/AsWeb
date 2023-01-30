@@ -1,0 +1,66 @@
+<script setup lang="ts">
+import { Search,Plus } from '@element-plus/icons-vue';
+
+</script>
+<template>
+    <el-container>
+      <el-header class="top">
+         <el-input
+            v-model="sea"
+            placeholder="Please input"
+            class="input-with-select"      
+         >
+         <template #prepend>
+            <el-checkbox-group v-model="seaN">
+               <el-checkbox-button v-for="it in seaF" :key="it" :label="it">
+                  {{ it }}
+               </el-checkbox-button>
+            </el-checkbox-group>
+         </template>
+         <template #append>
+            <el-button-group>
+            <el-button :icon="Search"/>
+            <el-button type="primary" :icon="Plus" circle />
+            </el-button-group>
+         </template>
+         </el-input>
+         <el-select
+            v-model="tag"
+            multiple
+            filterable
+            allow-create
+            default-first-option
+            :reserve-keyword="false"
+            placeholder="标签"
+            class="input-with-select"
+         >
+         <el-option-group
+            v-for="value in tags"
+            :key="value.key"
+            :label="value.label"
+         >
+            <el-option
+               v-for="item in value.tags"
+               :key="item.value"
+               :label="item.label"
+               :value="item.value"
+            />
+         </el-option-group>
+      </el-select>
+      </el-header>
+      <el-main>
+
+      </el-main>
+    </el-container>
+</template>
+<style>
+.input-with-select {
+   background-color: var(--el-fill-color-blank);
+   width:80%;
+   height: 60px;
+}
+.but2{
+   width: 60px;
+   height: 60px;
+}
+</style>

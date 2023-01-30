@@ -4,6 +4,7 @@ import {ref,defineEmits,defineProps} from 'vue';
 import config from '@/config';
 import axios from 'axios';
 import {ElMessage} from 'element-plus'
+
 const props=defineProps<{
     'vccode':String,
     'isrobot':Boolean
@@ -20,14 +21,15 @@ const emit=defineEmits<{
 function update(){
 	ElMessage.info('刷新中')
     show.value=false;
-    axios.post(config.host+'/api/robot/getVccode',{"lock":Math.floor(Math.random()*10)})
+    axios.post(config.host+'/api/robot/getVccode',{"lock":'登录'})
     .then(res=>{
         if(res.data.state!=1){
-            ElMessage.error('错误'+res.data.error);
+            ElMessage.error('错误'+res.data.erron);
             return ;
         }
         robotToken.value=res.data.result;
         emit('changeToken',robotToken.value);
+        ElMessage.success('刷新成功')
         show.value=true;
     }).catch(e=>{
         console.error(e);
@@ -42,12 +44,13 @@ function up(){
     if(vccode.value.length<=0){
         ElMessage.error('你验证码呢?');return ;
     }
+    ElMessage.info('开始验证');
     axios.post(config.host+'/api/robot/checkVccode',{
         "token":robotToken.value,
         "vccode":vccode.value
     }).then(res=>{
         if(res.data.state!=1){
-            ElMessage.error('错误'+res.data.error);return ;
+            ElMessage.error('错误'+res.data.erron);return ;
         }
         IsRobot.value=true;
         emit('ok',res.data.result);
@@ -80,8 +83,10 @@ update();
         </el-skeleton>
         </template>
         <template #append>
+            <el-button-group>
+            <el-button :disabled="!show" @click="up()">提交</el-button> 
             <el-button :icon="Refresh" circle @click="show=false;update()"/>
+            </el-button-group>
         </template>
      </el-input>
-	<el-button type="success" :disabled="!show" @chick="up">提交</el-button>
 </template>

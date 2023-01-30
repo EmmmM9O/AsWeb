@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { defineProps ,defineEmits,reactive,ref} from 'vue';
-import {ElMessageBox} from 'element-plus'
-import type { FormInstance } from 'element-plus'
+import type {FormInstance} from 'element-plus'
+import {ElMessage,ElMessageBox} from 'element-plus'
+import 'element-plus/es/components/message/style/css'
 import robot from './robot.vue';
-const button=ref('发送'),robotVShow=ref(false);
+import axios from 'axios';
+import config from '@/config';
+const button=ref('发送');
 const ruleFormRef = ref<FormInstance>();
 defineProps<{
     show:Boolean
@@ -88,17 +91,81 @@ const resetForm = (formEl: FormInstance | undefined) => {
     if (!formEl) return;
     formEl.resetFields();
 }
-const submitForm = (formEl: FormInstance | undefined) => {
-    if (!formEl) return;
-    formEl.validate((valid) => {
+async function submitForm(formEl: FormInstance | undefined){
+    if (!formEl) return false;
+    await formEl.validate((valid) => {
         if (valid) {
             console.log('submit!')
+            return true;
         } else {
             console.log('error submit!');
+            return false;
         }
     })
 }
 const emits=defineEmits(['change']);
+const token=ref('');
+const Token=ref('');
+function logon(){
+    if(!submitForm(ruleFormRef.value)){
+	ElMessage.error('错误');
+        return;
+    }
+    if(token.value.length<=0){
+        ElMessage.error('你机器验证码呢');
+        return ;
+    }
+    axios.post(config.host+'/api/user/signup',{
+        "mail":form.mail,
+        "name":form.name,
+        "password":form.password,
+        "token":token.value
+    }).then(res=>{
+        if(res.data.state!=1){
+            ElMessage.error(res.data.erron);
+            return ;
+        }
+        ElMessage.success('验证码发送成功');
+        Token.value=res.data.token;
+        button.value='60';
+        let timer = setInterval(() => {
+            let sum=Number(button.value);
+            if(sum==null||isNaN(sum)||sum<=0){
+                button.value='发送';
+                clearInterval(timer);
+            }else{
+                button.value=String(sum-1);
+            }
+        },1000)
+    }).catch(err=>{
+        ElMessage.error(err);
+    })
+}
+function vccode(){
+    if(!submitForm(ruleFormRef.value)){
+        ElMessage.error('错误');return ;
+    }
+    if(Token.value.length<=0){
+        ElMessage.error('你发了吗');return;
+    }
+    if(form.vccode.length<=0){
+        ElMessage.error('验证码请填');return ;
+    }
+    axios.post(config.host+'/api/user/vccode',{
+        "bToken":token.value,
+        "token":Token.value
+    }).then(res=>{
+        if(res.data.state!=1){
+            ElMessage.error(res.data.erron);
+            return ;
+        }
+        ElMessage.success("注册成功请登录");
+        emits("change");
+    }).catch(err=>{
+        ElMessage.error(err);
+    })
+    
+}
 </script>
 <template>
     <el-dialog
@@ -130,13 +197,13 @@ const emits=defineEmits(['change']);
         <el-form-item label="邮箱" prop="mail">
             <el-input v-model="form.mail" placeholder="邮箱" type="mail" autocomplete="off"  />
         </el-form-item>
-        <el-from-iten label="机器验证码" prop="robotV">
-            <robot @update="(v)=>{form.robotV=v}" :vccode="form.robotV" :isrobot="IsRobot" @ok="IsRobot=true"/>
-        </el-from-iten>
+        <el-form-item label="机器验证码" prop="robotV">
+            <robot @update="(v)=>{form.robotV=v}" :vccode="form.robotV" :isrobot="IsRobot" @ok="(v)=>{IsRobot=true;token=v}"/>
+        </el-form-item>
         <el-form-item label="验证码" prop="vccode">
             <el-input v-model="form.vccode" placeholder="验证码" type="vccode" autocomplete="off" :disabled="button!='发送'" >
                 <template #append>
-                    <el-button type="primary" plain :disabled="button!='发送'">{{ button }}</el-button>
+                    <el-button type="primary" plain :disabled="button!='发送'" @click="logon()">{{ button }}</el-button>
                 </template>
             </el-input>
         </el-form-item>
@@ -145,7 +212,7 @@ const emits=defineEmits(['change']);
     <template #footer >
         <span class="dialog-footer">
             
-            <el-button type="primary" @click="submitForm(ruleFormRef)">提交</el-button>
+            <el-button type="primary" @click="vccode()">提交</el-button>
             <el-button @click="resetForm(ruleFormRef)">重置</el-button>
             
         <el-button type="" @click="$emit('change')">取消</el-button>

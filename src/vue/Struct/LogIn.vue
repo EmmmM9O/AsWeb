@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { defineProps ,defineEmits,reactive,ref} from 'vue';
-import {ElMessageBox} from 'element-plus'
-import type { FormInstance } from 'element-plus'
+import type {FormInstance} from 'element-plus'
+import robot from './robot.vue';
+import axios from 'axios';
+import config from '@/config';
+import UserStore from '../Stores/User';
+const userStore=UserStore();
 const ruleFormRef = ref<FormInstance>()
 defineProps<{
     show:Boolean
@@ -21,7 +25,8 @@ const handleClose = (done: () => void) => {
 }
 const form=reactive({
     name:'',
-    password:''
+    password:'',
+    vccode:''
 })
 
 const passwordReg=/^[a-z0-9A-Z]{6,16}$/;
@@ -59,16 +64,38 @@ const resetForm = (formEl: FormInstance | undefined) => {
     formEl.resetFields();
 }
 const submitForm = (formEl: FormInstance | undefined) => {
+    if(!isOk.value){
+        ElMessage.error('验证码呢');
+        return ;
+    }
     if (!formEl) return;
     formEl.validate((valid) => {
         if (valid) {
             console.log('submit!')
+            axios.post(config.host+'/api/user/login',{
+                'name':form.name,
+                'password':form.password,
+                'token':token.value
+            }).then(res=>{
+                if(res.data.state!=1){
+                    ElMessage.error(res.data.error);
+                    return ;
+                }
+                ElMessage.success('登录成功!');
+                userStore.changeName(res.data.result.name);
+                userStore.changeState(res.data.state);
+                userStore.changeToken(res.data.token);
+		emits("change");
+            }).catch(err=>{
+                ElMessage.error(err);
+            })
         } else {
             console.log('error submit!');
         }
     })
 }
-
+const isOk=ref(false);
+const token=ref('');
 const emits=defineEmits(['change']);
 </script>
 <template>
@@ -94,6 +121,9 @@ const emits=defineEmits(['change']);
         </el-form-item>
         <el-form-item label="密码" prop="password">
             <el-input v-model="form.password" placeholder="密码" type="password" autocomplete="off"  />
+        </el-form-item>
+        <el-form-item label="验证码" prop="vccode">
+            <robot @update="(v)=>{form.vccode=v}" :vccode="form.vccode" :isrobot="isOk" @ok="(e)=>{isOk=true;token=e}"/>
         </el-form-item>
     </el-form>
     <template #footer >

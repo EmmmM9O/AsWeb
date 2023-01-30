@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import {ref} from 'vue';
 import { ElMessage } from 'element-plus'
-import {User,Setting,Calendar,Plus,More,House,Reading} from '@element-plus/icons-vue'
+import {User,Setting,Calendar,Plus,More,House,Reading,Operation} from '@element-plus/icons-vue'
 import LogIn from './Struct/LogIn.vue';
 import LogOn from './Struct/LogOn.vue';
+import UserStore from './Stores/User';
+const userStore=UserStore();
 const show=ref(false);
 const LogInShow=ref(false);
 const LogOnShow=ref(false);
 </script>
 <template>
-<el-aside>
+<el-aside width="auto">
     <el-menu
         active-text-color="#ffd04b"
         background-color="#545c64"
@@ -29,8 +31,10 @@ const LogOnShow=ref(false);
                 <span>用户</span>
             </template>
             <el-menu-item-group title="管理">
-                <el-menu-item index="2-1" @click="LogInShow=!LogInShow">登录</el-menu-item>
-                <el-menu-item index="2-2" @click="LogOnShow=!LogOnShow">注册</el-menu-item>
+                <el-menu-item index="2-1">{{ userStore.name }}</el-menu-item>
+                <el-menu-item index="2-2" @click="LogInShow=!LogInShow" v-show="userStore.state!=1">登录</el-menu-item>
+                <el-menu-item index="2-3" @click="LogOnShow=!LogOnShow" v-show="userStore.state!=1">注册</el-menu-item>
+                <el-menu-item index="2-4" @click="userStore.changeState(0);userStore.changeName('未注册')" v-show="userStore.state==1">退出登录</el-menu-item>
             </el-menu-item-group>
             <el-menu-item-group title="账户">
                 <el-menu-item index="2-3" @click="ElMessage.error('咕咕咕')">签到</el-menu-item>
@@ -66,7 +70,10 @@ const LogOnShow=ref(false);
             <el-icon><Reading /></el-icon>
             <span class="tx">地图</span>
         </el-menu-item>
-
+        <el-menu-item index="8" :class="$route.name=='测试'?'add':''" @click="$router.push('/test')">
+            <el-icon><Operation /></el-icon>
+            <span class="tx">测试</span>
+        </el-menu-item>
     </el-menu>
 </el-aside>
 <LogIn :show="LogInShow" @change="LogInShow=!LogInShow"/>
